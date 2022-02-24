@@ -22,9 +22,10 @@ public class ScoreCalculator {
                     .filter(p -> p.getName().equals(project.getProjectName()))
                     .findFirst().get();
 
-            // first working day = 0
-            // num of days to complete = 2
-            // then end working day is day1 and the next free day is day2
+            // For example:
+            // First Working Day = Day 0
+            // The num of days to complete = 2 days
+            // Then the End Working Day is Day 1 and the next free day is Day 2
             long nextFreeDay = firstWorkingDay + projectDetails.getNumOfDaysToComplete();
             project.getContributorNames()
                     .forEach(contributorName -> mapContributorNameToFirstFreeDay.put(contributorName, nextFreeDay));
@@ -39,7 +40,8 @@ public class ScoreCalculator {
         if (endWorkingDay <= projectDetails.getBestBeforeDay()) {
             return projectDetails.getScoreForCompletion();
         }
-        long daysLate = endWorkingDay - projectDetails.getBestBeforeDay();
+        long daysLate = endWorkingDay - projectDetails.getBestBeforeDay() + 1;
+
         return Math.max(0L, projectDetails.getScoreForCompletion() - daysLate);
     }
 }
