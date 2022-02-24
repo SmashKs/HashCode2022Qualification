@@ -1,5 +1,7 @@
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 public class Contributor {
 
@@ -9,10 +11,16 @@ public class Contributor {
 
     private final List<Skill> skillList;
 
+    private final Map<String, Skill> skillMap;
+
     public Contributor(String name, int numOfSkills, List<Skill> skillList) {
         this.name = name;
         this.numOfSkills = numOfSkills;
         this.skillList = skillList;
+        this.skillMap = new HashMap<>();
+        skillList.forEach(skill -> {
+            skillMap.put(skill.getName(), skill);
+        });
     }
 
     public String getName() {
@@ -33,6 +41,14 @@ public class Contributor {
                 .filter(sk -> sk.getLevel() == skill.getRequiredLevel())
                 .findFirst();
         levellingUpSkill.ifPresent(Skill::levelUpSkill);
+    }
+
+    public void levelUp(Skill skill) {
+        skill.levelUpSkill();
+    }
+
+    public Map<String, Skill> getSkillMap() {
+        return skillMap;
     }
 
     static final class Skill {
