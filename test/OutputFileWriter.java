@@ -7,7 +7,12 @@ public class OutputFileWriter {
         try {
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 
-            writer.println("Hello World");
+            writer.println(output.getNumOfExecutedProjects());
+            for (int i = 0; i < output.getNumOfExecutedProjects(); i++) {
+                Output.Project project = output.getProjectList().get(i);
+                writer.println(project.getProjectName());
+                writer.println(String.join(" ", project.getContributorNames()));
+            }
 
             writer.close();
         } catch (Exception e) {
