@@ -11,11 +11,21 @@ public class OutputFileParser {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
-            String firstLine = reader.readLine();
+            int numOfExecutedProjects = Integer.parseInt(reader.readLine());
+
+            List<Output.Project> projectList = new ArrayList<>();
+            for (int i = 0; i < numOfExecutedProjects; i++) {
+                String projectName = reader.readLine();
+                String contributerNameListString = reader.readLine();
+                List<String> contributerNameList = Arrays.asList(contributerNameListString.split(" "));
+                projectList.add(
+                        new Output.Project(projectName, contributerNameList)
+                );
+            }
 
             reader.close();
 
-            return new Output();
+            return new Output(numOfExecutedProjects, projectList);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException();
