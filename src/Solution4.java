@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,9 +8,9 @@ import java.util.stream.Collectors;
 
 /**
  * Algorithm notes:
- * Solution 2 but cleaned up
+ * Solution 3 but simpler since e and f don't pass
  */
-public class Solution3 implements Solution {
+public class Solution4 implements Solution {
 
     @Override
     public Output getSolution(Input input) {
@@ -19,32 +20,17 @@ public class Solution3 implements Solution {
             contributorToFreeDayMap.put(contributor, 0L);
         }
 
-        List<Output.Project> outputProjectList = new ArrayList<>();
-
-        while(!remainingProjectList.isEmpty()) {
-
-            HighestScoreProjectInfo highestScoreProject = getProjectWithHighestScore(remainingProjectList, contributorToFreeDayMap);
-
-            long score = highestScoreProject.getScore();
-            if (score == 0) {
-                // Invalid Project
-                break;
-            }
-
-            // Valid Project
-            contributorToFreeDayMap = highestScoreProject.getContributorToFreeDayMap();
-
-            outputProjectList.add(new Output.Project(
-                    highestScoreProject.getName(),
-                    highestScoreProject.getContributorList().stream().map(Contributor::getName).collect(Collectors.toList())
-            ));
-
-            remainingProjectList.remove(
-                    remainingProjectList.stream()
-                            .filter(pr -> highestScoreProject.getName().equals(pr.getName()))
-                            .findFirst().get()
-            );
-        }
+        List<Output.Project> outputProjectList = remainingProjectList.stream()
+                .map(project -> getProjectInfo(project, contributorToFreeDayMap))
+                .sorted(Comparator.comparing(HighestScoreProjectInfo::getScore).reversed())
+                .filter(project -> project.getScore() != 0)
+                .map(projectInfo -> new Output.Project(
+                        projectInfo.getName(),
+                        projectInfo.getContributorList().stream()
+                                .map(Contributor::getName)
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
 
         return new Output(
                 outputProjectList.size(),
