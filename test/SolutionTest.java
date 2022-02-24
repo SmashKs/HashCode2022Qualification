@@ -13,7 +13,7 @@ public class SolutionTest {
 
         // Get Output from Java solution
         Solution solution = new Solution1();
-        Output output = null;
+        Output output = solution.getSolution(input);
         OutputFileWriter.writeToOutputFile(output, outputFileName);
 
         long score = ScoreCalculator.calculateScore(input, output);
