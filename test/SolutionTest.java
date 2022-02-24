@@ -4,7 +4,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 public class SolutionTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"a", "b", "c", "d", "e"})
+    @ValueSource(strings = {"a", "b", "c", "d", "e", "f"})
     public void testWithJavaSolution(String s) {
         String inputFileName = String.format("input/%s.txt", s);
         String outputFileName = String.format("output/%s.txt", s);
@@ -22,7 +22,7 @@ public class SolutionTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"a", "b", "c", "d", "e"})
+    @ValueSource(strings = {"a", "b", "c", "d", "e", "f"})
     public void testWithOutputFile(String s) {
         String inputFileName = String.format("input/%s.txt", s);
         String outputFileName = String.format("output/%s.txt", s);
