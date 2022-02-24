@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Optional;
 
 public class Contributor {
 
@@ -26,10 +27,18 @@ public class Contributor {
         return skillList;
     }
 
+    public void levelUp(Project.Skill skill) {
+        Optional<Skill> levellingUpSkill = skillList.stream()
+                .filter(sk -> sk.getName().equals(skill.getName()))
+                .filter(sk -> sk.getLevel() == skill.getRequiredLevel())
+                .findFirst();
+        levellingUpSkill.ifPresent(Skill::levelUpSkill);
+    }
+
     static final class Skill {
         private final String name; // name of the skill
 
-        private final int level; // 1 <= L <= 10, level of the skill
+        private int level; // 1 <= L <= 10, level of the skill
 
         public Skill(String name, int level) {
             this.name = name;
@@ -42,6 +51,10 @@ public class Contributor {
 
         public int getLevel() {
             return level;
+        }
+
+        public void levelUpSkill() {
+            this.level = level + 1;
         }
     }
 }
